@@ -60,7 +60,7 @@
                     
                     <div class="col-lg-6 order-lg-1 my-auto showcase-text">
                         <h2>Gene information</h2>
-                        <p class="lead mb-0">Here we will see the information about the gene that is stored in REFSEQ for example</p>
+                        <p class="lead mb-0">{{ function }}</p>
                     </div>
                 </div>
 
@@ -71,8 +71,11 @@
                 <div class="row g-0">
                     
                     <div class="col-lg-6 order-lg-1 my-auto showcase-text">
-                        <h2>Sequence</h2>
-                        <p class="lead mb-0">Here we see the sequences etc</p>
+                        <h2>Amino Acid Sequence</h2>
+                        <p class="lead mb-0">{{ sequence }}</p>
+                        
+                        <h2>Nucleotide Sequence</h2>
+                        <p class="lead mb-0">{{ sequence }}</p>
                     </div>
                 </div>
                 
@@ -81,16 +84,27 @@
 
 
             <!-- structure PDB or whatever -->
-            <div class="container-fluid p-0" id = "Structure">
+            <div class="container-fluid p-0" id="Structure">
                 <div class="row g-0">
-                    
                     <div class="col-lg-6 order-lg-1 my-auto showcase-text">
                         <h2>Structure</h2>
                         <p class="lead mb-0">Here we see the structure etc</p>
                     </div>
+                    <div class="col-lg-6 order-lg-2">
+                        <div id="viewport" style="width:400px; height:300px;"></div>
+                    </div>
                 </div>
-                
             </div>
+            <script src="./react.production.min.js"></script>
+            <script src="https://unpkg.com/ngl@latest/dist/ngl.js"></script>
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    var stage = new NGL.Stage("viewport");
+                    stage.loadFile("rcsb://1crn", { defaultRepresentation: true }).then(function (o) {
+                        stage.autoView();
+                    });
+                });
+            </script>
 
 
             <!-- interactions -->
@@ -99,7 +113,7 @@
                     
                     <div class="col-lg-6 order-lg-1 my-auto showcase-text">
                         <h2>Interactions</h2>
-                        <p class="lead mb-0">Here we see the interactions of the protein from string</p>
+                        <img src="/network/YFR028C" alt="Network image">
                     </div>
                 </div>
                 
