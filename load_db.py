@@ -2,7 +2,7 @@ from model import Gene, Database, gene_has_database, project_has_gene, User,Role
 from sqlalchemy import create_engine, MetaData, insert, select
 from sqlalchemy.orm import Session
 from flask import Flask # needs an active application context
-from app import create_app
+from app import app
 import pandas as pd
 
 
@@ -22,10 +22,9 @@ dict_genes = excel_genes.to_dict('index')
 
 
 
-app = create_app()
-
-# Create all tables in the database and load data
 with app.app_context():
+# Create all tables in the database and load data
+
     db.create_all()
 
     # Delete existing rows in the Database table

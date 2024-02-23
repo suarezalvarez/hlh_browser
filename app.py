@@ -19,13 +19,12 @@ def index():
 def search():
     gene_input = request.form.get('gene_name')
     species = request.form.get('species')
-    return render_template('search.html' , gene_input = gene_input)
+    return render_template('search.html' , gene_input = gene_input, species = species)
 
     
 
 
 # Call the create_app function and run the app
-
 
 
 if __name__ == "__main__":

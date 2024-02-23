@@ -2,10 +2,10 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 from flask import Flask
 
+
 #### define model ####
 
 db = SQLAlchemy()
-
 
 project_has_gene = db.Table("project_has_gene", 
                             db.Column("project_id", db.Integer, db.ForeignKey("projects.id")),
