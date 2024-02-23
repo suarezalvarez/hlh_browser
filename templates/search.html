@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Landing Page - Start Bootstrap Theme</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <!-- Bootstrap icons-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" type="text/css" />
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    </head>
+
+    <body>
+
+        <!-- Navigation-->
+        <nav class="navbar navbar-light bg-light static-top">
+            <div class="container">
+                <a class="navbar-brand" href="#!">Helixcopter</a>
+                <a class="btn btn-primary" href="#signup">Sign Up</a>
+                
+            </div>
+        </nav>
+        <!-- Masthead-->
+        <header class="masthead">
+            <div class="container position-relative">
+                <div class="row justify-content-center">
+                    <div class="col-xl-6">
+                        <div class="text-center text-white">
+                            <!-- Page heading-->
+                            <h1 class="mb-5"> {{ gene_input }}
+                                {{ species }}
+                            </h1>
+                            
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <ul class="navbar-nav" >
+            <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#Gene information">Gene information</a></li>
+            <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#Sequence">Sequence</a></li>
+            <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#Structure">Structure</a></li>
+            <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#Interactions">Interactions</a></li>
+            <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#Datasets">Datasets</a></li>
+        </ul>
+       
+        <!-- Image Showcases-->
+        <section class="showcase">
+
+            <!-- information about gene -->
+            <div class="container-fluid p-0" id = "Gene information">
+                <div class="row g-0">
+                    
+                    <div class="col-lg-6 order-lg-1 my-auto showcase-text">
+                        <h2>Gene information</h2>
+                        <p class="lead mb-0">Here we will see the information about the gene that is stored in REFSEQ for example</p>
+                    </div>
+                </div>
+
+
+
+            <!-- sequence with download etc -->
+            <div class="container-fluid p-0" id = "Sequence">
+                <div class="row g-0">
+                    
+                    <div class="col-lg-6 order-lg-1 my-auto showcase-text">
+                        <h2>Sequence</h2>
+                        <p class="lead mb-0">Here we see the sequences etc</p>
+                    </div>
+                </div>
+                
+            </div>
+
+
+
+            <!-- structure PDB or whatever -->
+            <div class="container-fluid p-0" id = "Structure">
+                <div class="row g-0">
+                    
+                    <div class="col-lg-6 order-lg-1 my-auto showcase-text">
+                        <h2>Structure</h2>
+                        <p class="lead mb-0">Here we see the structure etc</p>
+                    </div>
+                </div>
+                
+            </div>
+
+
+            <!-- interactions -->
+            <div class="container-fluid p-0" id = "Interactions">
+                <div class="row g-0">
+                    
+                    <div class="col-lg-6 order-lg-1 my-auto showcase-text">
+                        <h2>Interactions</h2>
+                        <p class="lead mb-0">Here we see the interactions of the protein from string</p>
+                    </div>
+                </div>
+                
+            </div>
+
+
+            <!-- interactions -->
+            <div class="container-fluid p-0" id = "Datasets">
+                <div class="row g-0">
+                    
+                    <div class="col-lg-6 order-lg-1 my-auto showcase-text">
+                        <h2>Datasets</h2>
+                        <p class="lead mb-0">Here we see the dataset download link from GEO</p>
+                    </div>
+                </div>
+                
+            </div>
+            
+
+
+        </section>
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <!-- Footer-->
+        <footer class="footer bg-light">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 h-100 text-center text-lg-start my-auto">
+                        <ul class="list-inline mb-2">
+                            <li class="list-inline-item"><a href="#!">About</a></li>
+                            <li class="list-inline-item">⋅</li>
+                            <li class="list-inline-item"><a href="#!">Contact</a></li>
+                            <li class="list-inline-item">⋅</li>
+                            <li class="list-inline-item"><a href="#!">Terms of Use</a></li>
+                            <li class="list-inline-item">⋅</li>
+                            <li class="list-inline-item"><a href="#!">Privacy Policy</a></li>
+                        </ul>
+                        <p class="text-muted small mb-4 mb-lg-0">&copy; Helixcopter 2024.</p>
+                    </div>
+                    <div class="col-lg-6 h-100 text-center text-lg-end my-auto">
+                        <ul class="list-inline mb-0">
+                            <li class="list-inline-item me-4">
+                                <a href="#!"><i class="bi-facebook fs-3"></i></a>
+                            </li>
+                            <li class="list-inline-item me-4">
+                                <a href="#!"><i class="bi-twitter fs-3"></i></a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="#!"><i class="bi-instagram fs-3"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="../js/scripts.js"></script>
+        <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+        <!-- * *                               SB Forms JS                               * *-->
+        <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
+        <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+        <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+    </body>
+</html>
