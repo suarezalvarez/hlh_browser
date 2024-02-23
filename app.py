@@ -1,8 +1,13 @@
 from flask import Flask, render_template, url_for, redirect, request
 from model import db
+from forms import SignUpForm, LoginForm, SearchForm
+
 import pymysql
 
 app = Flask(__name__)
+
+# Set the secret key
+app.secret_key = 'your-secret-key'
 
 # Set the database URI
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:1234@localhost:3306/hlh'
@@ -14,6 +19,13 @@ db.init_app(app)
 def index():
     return render_template('index.html')
 
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    form = SignUpForm()
+    if form.validate_on_submit():
+        # add user registration logic here
+        pass
+    return render_template('signup.html', form=form)
 
 @app.route('/search' , methods = ['POST','GET'])
 def search():

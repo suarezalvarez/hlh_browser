@@ -5,6 +5,10 @@ from model import project_has_gene, gene_has_database,User,Role,Projects,Gene,Da
 
 
 class SignUpForm(FlaskForm):
+    name = StringField('Name', validators=[InputRequired(), Length(min=4, max=80)],
+                       render_kw={"placeholder": "Your name"})
+    surname = StringField('Surname', validators=[InputRequired(), Length(min=4, max=80)],
+                          render_kw={"placeholder": "Your surname"})
     email = StringField(validators=[Email(), InputRequired(), Length(min=4, max=80)],
                         render_kw={"placeholder": "name@example.com"})
 
