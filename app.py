@@ -18,7 +18,14 @@ db.init_app(app)
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    
+    # Get a list of all gene names from the Gene table
+    
+    gene_names = [gene.gene_name for gene in Gene.query.all()]
+    
+    return render_template('index.html', gene_names=gene_names)
+
+
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
