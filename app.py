@@ -4,8 +4,12 @@ from forms import SignUpForm, LoginForm, SearchForm
 import pymysql
 from apis import *
 from sqlalchemy import select, and_ 
+from flask import flash, redirect, url_for
+from flask_bcrypt import bcrypt
+from flask_login import login_user, current_user, LoginManager, login_required
 
 app = Flask(__name__)
+
 
 # Set the secret key
 app.secret_key = 'your-secret-key'
@@ -15,6 +19,14 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:1234@localhost:330
 
 # Configure the SQLAlchemy instance with the Flask app
 db.init_app(app)
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
+
+@login_manager.user_loader
+def load_user(user_id):
+    return db.session.get(User, (int(user_id)))
 
 @app.route('/')
 def index():
@@ -34,6 +46,22 @@ def signup():
         # add user registration logic here
         pass
     return render_template('signup.html', form=form)
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    loginerror = None
+    form = LoginForm()  # Create the form instance before the conditional statement
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        if user:
+            if (form_password := form.password.data):
+                if bcrypt.checkpw(form_password.encode('utf8'), user.password):
+                    login_user(user)
+                    return redirect(url_for('userspace'))
+        loginerror = 'Invalid email or password'
+    return render_template('login.html', form=form, loginerror=loginerror)
+                                    
+
 
 @app.route('/search' , methods = ['POST','GET'])
 def search():
