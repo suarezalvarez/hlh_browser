@@ -47,9 +47,7 @@ def signup():
             hashed_password = bcrypt.hashpw(form_password.encode('utf8'), bcrypt.gensalt())
             new_user = User(email=form.email.data, password=hashed_password)
             db.session.add(new_user)
-            db.session.flush()
-            db.session.refresh(new_user)
-        
+            
             db.session.commit()
             return redirect(url_for('userspace'))
       
