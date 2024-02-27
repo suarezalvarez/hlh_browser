@@ -43,8 +43,16 @@ def index():
 def signup():
     form = SignUpForm()
     if form.validate_on_submit():
-        # add user registration logic here
-        pass
+        if (form_password := form.password.data):
+            hashed_password = bcrypt.hashpw(form_password.encode('utf8'), bcrypt.gensalt())
+            new_user = User(email=form.email.data, password=hashed_password)
+            db.session.add(new_user)
+            db.session.flush()
+            db.session.refresh(new_user)
+        
+            db.session.commit()
+            return redirect(url_for('userspace'))
+      
     return render_template('signup.html', form=form)
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -61,6 +69,14 @@ def login():
         loginerror = 'Invalid email or password'
     return render_template('login.html', form=form, loginerror=loginerror)
                                     
+@app.route('/userspace', methods=['GET', 'POST'])
+@login_required
+def userspace():
+    user = db.session.get(User, (int(current_user.id)))
+    form = SearchForm()
+    #falta un trozo, cuando queramos meter cosas lo ponemos
+    return render_template('userspace.html', form=form, user_name=user.id)
+
 
 
 @app.route('/search' , methods = ['POST','GET'])
