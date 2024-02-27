@@ -38,7 +38,9 @@ with app.app_context():
     # Create instances of Database
     uniprot = Database(id=1, db_name="UNIPROT", url_prefix="http://www.uniprot.org/uniprotkb/")
     ncbi = Database(id=2, db_name="NCBI", url_prefix="https://www.ncbi.nlm.nih.gov/gene/")
-    db.session.add_all([uniprot, ncbi])
+    pdb = Database(id=3, db_name="PDB", url_prefix="https://www.rcsb.org/structure/")
+    
+    db.session.add_all([uniprot, ncbi, pdb])
 
     # Commit the session to persist the instances in the database
     db.session.commit()
@@ -76,6 +78,12 @@ with app.app_context():
                                                 database_id=ncbi.id, 
                                                 gene_in_db = ids_dict['ncbi'], 
                                                 url = ncbi.url_prefix + str(ids_dict['ncbi']))
+        db.session.execute(stmt)
+        
+        stmt = insert(gene_has_database).values(gene_id=gene_species.id,
+                                                database_id=pdb.id, 
+                                                gene_in_db = ids_dict['pdb'], 
+                                                url = pdb.url_prefix + str(ids_dict['pdb']))
         db.session.execute(stmt)
         # Commit the session to persist the data in the gene_has_database table
         db.session.commit()
