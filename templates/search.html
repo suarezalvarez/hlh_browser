@@ -52,10 +52,10 @@
                     
                     <div class="col-lg-6 order-lg-1 my-auto showcase-text">
                         <h2>Amino Acid Sequence</h2>
-                        <p class="lead mb-0">{{ sequence }}</p>
+                        <p class="lead mb-0" style="font-family: monospace;">{{ sequence }}</p>
                         
                         <h2>Nucleotide Sequence</h2>
-                        <p class="lead mb-0">{{ sequence }}</p>
+                        <p class="lead mb-0" style="font-family: monospace;">{{ nuc_seq }}</p>
                     </div>
                 </div>
                 
@@ -68,23 +68,28 @@
                 <div class="row g-0">
                     <div class="col-lg-6 order-lg-1 my-auto showcase-text">
                         <h2>Structure</h2>
-                        <p class="lead mb-0">Here we see the structure etc</p>
+                        <p class="lead mb-0">Here we see the structure {{ pdb }}</p>
                     </div>
                     <div class="col-lg-6 order-lg-2">
                         <div id="viewport" style="width:400px; height:300px;"></div>
                     </div>
                 </div>
             </div>
-            <script src="static/js/react.production.min.js"></script>
+
             <script src="https://unpkg.com/ngl@latest/dist/ngl.js"></script>
+            <script src="static/js/react.production.min.js"></script>
             <script>
+                // Define the pdb variable in the global scope
+                var pdb = "{{ pdb }}";
+            
                 document.addEventListener("DOMContentLoaded", function () {
                     var stage = new NGL.Stage("viewport");
-                    stage.loadFile("rcsb://1crn", { defaultRepresentation: true }).then(function (o) {
+                    stage.loadFile("https://files.rcsb.org/download/" + pdb, { defaultRepresentation: true }).then(function (o) {
                         stage.autoView();
                     });
                 });
             </script>
+
  
 
             <!-- interactions -->

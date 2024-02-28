@@ -82,25 +82,56 @@ def search():
 
 
     gene_input = request.form.get('gene_name')
+
     species = request.form.get('species')
 
+
+    
     # Query the Gene table for a gene with the given name and species
     gene = Gene.query.filter_by(gene_name=gene_input, species=species).first()
+
+    # Get the Database instance for NCBI
+
+    ncbi = Database.query.filter_by(db_name='NCBI').first()
 
     # Get the Database instance for Uniprot
     uniprot = Database.query.filter_by(db_name='Uniprot').first()
 
- 
-        
+    # Get the Database instance for PDB
+    pdb = Database.query.filter_by(db_name='PDB').first()
+
+
     if gene and uniprot:
-        
+
+
+        #######################################
+        #### NUCLEOTIDE SEQUENCE FROM NCBI ####
+        #######################################
+
+        stmt = select(gene_has_database.c.gene_in_db).where(and_(gene_has_database.c.gene_id == gene.id, gene_has_database.c.database_id == ncbi.id))
+
+        # Execute the select statement and fetch the results
+
+        results = db.session.execute(stmt).fetchall()
+
+        # fetch info 
+
+        for result in results:
+            nuc_seq = result[0]
+
+        nuc_seq = fetch_nucleotide_sequence(nuc_seq)
+
+
+        #######################################
+        #### PROTEIN SEQUENCE FROM UNIPROT ####
+        #######################################
         # Create a select statement for the gene_has_database table
         stmt = select(gene_has_database.c.gene_in_db).where(and_(gene_has_database.c.gene_id == gene.id, gene_has_database.c.database_id == uniprot.id))
 
         # Execute the select statement and fetch the results
         results = db.session.execute(stmt).fetchall()
 
-        # Print the gene_in_db values
+        # fetch sequence from uniprot_accession_code
         for result in results:
             uniprot_accession_code = result[0]
         
@@ -108,7 +139,31 @@ def search():
         sequence = get_sequence(uniprot_accession_code=uniprot_accession_code)
         
 
-        return render_template('search.html', gene_input=gene.gene_name, uniprot_accession_code=uniprot_accession_code , species = gene.species, sequence = sequence)
+        ####################################
+        #### PROTEIN STRUCTURE FROM PDB ####
+        ####################################
+
+        # Create a select statement for the gene_has_database table
+        stmt = select(gene_has_database.c.gene_in_db).where(and_(gene_has_database.c.gene_id == gene.id, gene_has_database.c.database_id == pdb.id))
+
+        # Execute the select statement and fetch the results
+        results = db.session.execute(stmt).fetchall()
+
+        # Print the gene_in_db values
+        for result in results:
+            pdb_accession_code = result[0]
+        
+
+
+
+
+        return render_template('search.html', 
+                               gene_input=gene.gene_name, 
+                               uniprot_accession_code=uniprot_accession_code , 
+                               species = gene.species, 
+                               nuc_seq = nuc_seq,
+                               sequence = sequence,
+                               pdb = pdb_accession_code)
 
 
     else:

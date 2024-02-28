@@ -81,6 +81,6 @@ def fetch_nucleotide_sequence(nucleotide_id):
     response = requests.get(api_url, params=params)
     
     if response.status_code == 200:
-        sequence = response.text
+        return response.text
     else:
         return "Failed to fetch nucleotide sequence from NCBI. Status code: " + str(response.status_code), 400
