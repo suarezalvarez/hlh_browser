@@ -23,7 +23,7 @@ class User(db.Model, UserMixin): #no entiendo el user mixin
     id = db.Column(db.Integer, primary_key=True, unique=True)
     email = db.Column(db.String(255), nullable=False, unique=True)
     password = db.Column(db.String(255), nullable=False)
-    role_id = db.Column(db.Integer, db.ForeignKey("role.id"), nullable=True)
+    role_id = db.Column(db.Integer, db.ForeignKey("role.id"), nullable=False)
 
     user_projects= db.relationship("Projects", backref="User")
     

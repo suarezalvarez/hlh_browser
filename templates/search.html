@@ -81,11 +81,16 @@
             <script>
                 // Define the pdb variable in the global scope
                 var pdb = "{{ pdb }}";
-            
+                var uniprot = "{{ uniprot_accession_code }}"
                 document.addEventListener("DOMContentLoaded", function () {
                     var stage = new NGL.Stage("viewport");
-                    stage.loadFile("https://files.rcsb.org/download/" + pdb, { defaultRepresentation: true }).then(function (o) {
+                    var source = pdb === "x" ? "https://alphafold.ebi.ac.uk/files/AF-" : "https://files.rcsb.org/download/";
+                    var file = pdb === "x" ? uniprot + "-F1-model_v1.pdb" : pdb + ".pdb";
+
+                    stage.loadFile(source + file, { defaultRepresentation: true }).then(function (o) {
                         stage.autoView();
+                    }).catch(function () {
+                        console.error("Failed to load file");
                     });
                 });
             </script>
@@ -98,7 +103,7 @@
                     
                     <div class="col-lg-6 order-lg-1 my-auto showcase-text">
                         <h2>Interactions</h2>
-                        <img src="/network/YFR028C" alt="Network image">
+                        <img src="data:image/png;base64,{{ network_image }}"></img>
                     </div>
                 </div>
                 

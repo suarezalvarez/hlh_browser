@@ -32,9 +32,20 @@ with app.app_context():
     db.session.query(gene_has_database).delete()
     db.session.query(Database).delete()
     db.session.query(Gene).delete()
+    db.session.query(Role).delete()
     db.session.commit()
 
-        
+    # Create a new role
+    default_role = Role(name = 'user' , privileges = 'basic')
+
+    # Add the new role to the session
+    db.session.add(default_role)
+
+    # Commit the session to persist the new role in the database
+    db.session.commit()        
+
+
+
     # Create instances of Database
     uniprot = Database(id=1, db_name="UNIPROT", url_prefix="http://www.uniprot.org/uniprotkb/")
     ncbi = Database(id=2, db_name="NCBI", url_prefix="https://www.ncbi.nlm.nih.gov/gene/")

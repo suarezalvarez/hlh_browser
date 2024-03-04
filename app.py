@@ -45,7 +45,8 @@ def signup():
     if form.validate_on_submit():
         if (form_password := form.password.data):
             hashed_password = bcrypt.hashpw(form_password.encode('utf8'), bcrypt.gensalt())
-            new_user = User(email=form.email.data, password=hashed_password)
+            default_role = Role.query.filter_by(name='user').first()
+            new_user = User(email=form.email.data, password=hashed_password, role_id=default_role.id)
             db.session.add(new_user)
             
             db.session.commit()
@@ -61,7 +62,7 @@ def login():
         user = User.query.filter_by(email=form.email.data).first()
         if user:
             if (form_password := form.password.data):
-                if bcrypt.checkpw(form_password.encode('utf8'), user.password):
+                if bcrypt.checkpw(form_password.encode('utf8'), user.password.encode('utf8')):
                     login_user(user)
                     return redirect(url_for('userspace'))
         loginerror = 'Invalid email or password'
@@ -70,10 +71,10 @@ def login():
 @app.route('/userspace', methods=['GET', 'POST'])
 @login_required
 def userspace():
-    user = db.session.get(User, (int(current_user.id)))
+    user = User.query.get(int(current_user.id))
     form = SearchForm()
     #falta un trozo, cuando queramos meter cosas lo ponemos
-    return render_template('userspace.html', form=form, user_name=user.id)
+    return render_template('userspace.html', form=form, user_email=user.email)
 
 
 
@@ -152,9 +153,23 @@ def search():
         # Print the gene_in_db values
         for result in results:
             pdb_accession_code = result[0]
+
+        
         
 
+        ####################################
+        ####      FUNCTION UNIPROT      ####  
+        ####################################
+       
+        function = get_function(uniprot_accession_code)
 
+
+        ##################################
+        ####     NETWORK STRING      #####
+        ##################################
+
+
+        network = get_network(uniprot_accession_code)
 
 
         return render_template('search.html', 
@@ -163,7 +178,9 @@ def search():
                                species = gene.species, 
                                nuc_seq = nuc_seq,
                                sequence = sequence,
-                               pdb = pdb_accession_code)
+                               pdb = pdb_accession_code,
+                               function = function,
+                               network_image = network)
 
 
     else:
