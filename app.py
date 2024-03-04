@@ -46,7 +46,7 @@ def signup():
         if (form_password := form.password.data):
             hashed_password = bcrypt.hashpw(form_password.encode('utf8'), bcrypt.gensalt())
             default_role = Role.query.filter_by(name='user').first()
-            new_user = User(email=form.email.data, password=hashed_password, role_id=default_role.id)
+            new_user = User(email=form.email.data, name=form.name.data, surname=form.name.data, password=hashed_password, role_id=default_role.id)
             db.session.add(new_user)
             
             db.session.commit()
@@ -74,7 +74,7 @@ def userspace():
     user = User.query.get(int(current_user.id))
     form = SearchForm()
     #falta un trozo, cuando queramos meter cosas lo ponemos
-    return render_template('userspace.html', form=form, user_email=user.email)
+    return render_template('userspace.html', form=form, user_email=user.email, user_name=user.name, user_surname=user.surname)
 
 
 
@@ -171,6 +171,19 @@ def search():
 
         network = get_network(uniprot_accession_code)
 
+        ##################################
+        ####         GEO URL         #####
+        ##################################
+
+        if species == "human":
+            species_name = "Homo sapiens"
+        else:
+            species_name = "Mus musculus"
+
+        GEO_url = f"https://www.ncbi.nlm.nih.gov/gds/?term=({gene_input})+AND+%22{species_name}%22"
+
+
+
 
         return render_template('search.html', 
                                gene_input=gene.gene_name, 
@@ -180,7 +193,8 @@ def search():
                                sequence = sequence,
                                pdb = pdb_accession_code,
                                function = function,
-                               network_image = network)
+                               network_image = network,
+                               GEO_url = GEO_url)
 
 
     else:

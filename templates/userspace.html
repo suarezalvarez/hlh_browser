@@ -3,9 +3,8 @@
 
 {% block body %}
 
-<h1 class="h3 mb-3 fw-normal"> Welcome, {{ user_email }}</h1>
-
 <form class="form-signin text-center" action="{{ url_for('userspace') }}" method="post">
+  <h1 class="h3 mb-3 fw-normal"> Welcome, {{ user_name }}</h1>
   <p> Hello</p>
 </form>
 {% endblock %}

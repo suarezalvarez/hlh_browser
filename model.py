@@ -22,6 +22,8 @@ gene_has_database = db.Table("gene_has_database",
 class User(db.Model, UserMixin): #no entiendo el user mixin
     id = db.Column(db.Integer, primary_key=True, unique=True)
     email = db.Column(db.String(255), nullable=False, unique=True)
+    name = db.Column(db.String(255), nullable=False)
+    surname = db.Column(db.String(255), nullable=False)
     password = db.Column(db.String(255), nullable=False)
     role_id = db.Column(db.Integer, db.ForeignKey("role.id"), nullable=False)
 

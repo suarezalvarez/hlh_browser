@@ -32,6 +32,8 @@ with app.app_context():
     db.session.query(gene_has_database).delete()
     db.session.query(Database).delete()
     db.session.query(Gene).delete()
+    db.session.query(project_has_gene).delete()
+    db.session.query(User).delete()
     db.session.query(Role).delete()
     db.session.commit()
 

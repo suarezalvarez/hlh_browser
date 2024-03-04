@@ -13,22 +13,20 @@ def get_sequence(uniprot_accession_code):
 
 
 def get_function(uniprot_accession_code):
-    url = f'https://www.uniprot.org/uniprot/{uniprot_accession_code}.txt'
+    url = f'https://rest.uniprot.org/uniprotkb/{uniprot_accession_code}.txt'
     response = requests.get(url)
     if response.status_code == 200:
-        function_paragraph = ""
-        hola = False
-        for line in response.text.split('\n'):
-            if '-!- FUNCTION' in line:
-                hola = True
-                line = line.replace('-!- FUNCTION:', '')
-            elif '-!- SUBCELLULAR' in line:
-                hola = False
-            if hola:
-                line = line.replace('CC   ', '')
-                function_paragraph += line.strip() + " "
-            
-        return function_paragraph.strip()
+        entry_text = response.text
+        # Simple parsing for Function section - might need adjustment based on actual text structure
+        start_marker = "CC   -!- FUNCTION:"
+        end_marker = "CC   -!-"
+        start_index = entry_text.find(start_marker)
+        if start_index != -1:
+            end_index = entry_text.find(end_marker, start_index + len(start_marker))
+            function_text = entry_text[start_index:end_index].strip()
+            return function_text.replace("CC       ", "").replace(start_marker, "").strip()
+        else:
+            return "Function information not found."
     else:
         return "Could not retrieve function information", 400
     
