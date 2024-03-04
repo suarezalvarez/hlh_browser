@@ -1,6 +1,6 @@
 from flask import Flask, render_template, url_for, redirect, request 
 from model import *
-from forms import SignUpForm, LoginForm, SearchForm
+from forms import SignUpForm, LoginForm, SearchForm, ProjectForm
 import pymysql
 from apis import *
 from sqlalchemy import select, and_ 
@@ -46,7 +46,7 @@ def signup():
         if (form_password := form.password.data):
             hashed_password = bcrypt.hashpw(form_password.encode('utf8'), bcrypt.gensalt())
             default_role = Role.query.filter_by(name='user').first()
-            new_user = User(email=form.email.data, name=form.name.data, surname=form.name.data, password=hashed_password, role_id=default_role.id)
+            new_user = User(email=form.email.data, name=form.name.data, surname=form.surname.data, password=hashed_password, role_id=default_role.id)
             db.session.add(new_user)
             
             db.session.commit()
@@ -72,12 +72,31 @@ def login():
 @login_required
 def userspace():
     user = User.query.get(int(current_user.id))
-    form = SearchForm()
+    form = ProjectForm()
     #falta un trozo, cuando queramos meter cosas lo ponemos
-    return render_template('userspace.html', form=form, user_email=user.email, user_name=user.name, user_surname=user.surname)
+    projects = Projects.query.filter_by(user=user.id).all()
+    return render_template('userspace.html', form=form, user_email=user.email, user_name=user.name, user_surname=user.surname,
+                           projects=projects)
 
 
+@app.route('/create_project', methods=['GET', 'POST'])
+def create_project():
+    form = ProjectForm()
+    if form.validate_on_submit():
+        user = User.query.get(int(current_user.id))
+        
 
+        new_project = Projects(project_name=form.project_name.data, description=form.description.data, user=user.id)
+        db.session.add(new_project)
+        db.session.commit()
+    
+        flash('Project created successfully', 'success')
+        projects = Projects.query.filter_by(user=user.id).all()
+    # Whether the form was submitted or not, render the 'userspace' template
+    return render_template('userspace.html', form=form, user_email=user.email, user_name=user.name, user_surname=user.surname,
+                           projects=projects)
+    
+    
 @app.route('/search' , methods = ['POST','GET'])
 def search():
 

@@ -36,3 +36,10 @@ class SearchForm(FlaskForm):
     search = StringField(validators=[InputRequired(), Length(min=4, max=10)], render_kw={"placeholder": "ex: ASCL1"})
 
     submit = SubmitField("Add Sequence")
+
+class ProjectForm(FlaskForm):
+    project_name = StringField(validators=[InputRequired(), Length(min=4, max=80)],
+                              render_kw={"placeholder": "Project name"})
+    description = StringField(validators=[Length(min=4, max=2000)])
+
+    submit = SubmitField("Create Project")
