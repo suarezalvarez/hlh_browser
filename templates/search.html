@@ -34,6 +34,14 @@
         <!-- Image Showcases-->
         <section class="showcase">
 
+            <!-- Add Gene to Project -->
+            <form action="{{ url_for('add_gene_to_project', gene_id=gene.id) }}" method="post" style="margin-bottom: 20px;">
+                <select name="project_id">
+                    
+                </select>
+                <input type="submit" value="Add Gene to Project">
+              </form>
+
             <!-- information about gene -->
             <div class="container-fluid p-0" id = "Gene information">
                 <div class="row g-0">

@@ -26,16 +26,16 @@ login_manager.login_view = 'login'
 
 @login_manager.user_loader
 def load_user(user_id):
-    return db.session.get(User, (int(user_id)))
+    return db.session.query(User).get(int(user_id))
 
 @app.route('/')
 def index():
     
     # Get a list of all gene names from the Gene table
-    
+    user = User.query.get(int(current_user.id))
     gene_names = [gene.gene_name for gene in Gene.query.all()]
     
-    return render_template('index.html', gene_names=gene_names)
+    return render_template('index.html', gene_names=gene_names, user=user)
 
 
 
@@ -63,7 +63,7 @@ def login():
         if user:
             if (form_password := form.password.data):
                 if bcrypt.checkpw(form_password.encode('utf8'), user.password.encode('utf8')):
-                    login_user(user)
+                    login_user(user, remember=True)
                     return redirect(url_for('userspace'))
         loginerror = 'Invalid email or password'
     return render_template('login.html', form=form, loginerror=loginerror)
@@ -99,7 +99,7 @@ def create_project():
     
 @app.route('/search' , methods = ['POST','GET'])
 def search():
-
+    user = User.query.get(int(current_user.id))
 
     gene_input = request.form.get('gene_name')
 
@@ -205,6 +205,7 @@ def search():
 
 
         return render_template('search.html', 
+                               gene=gene,
                                gene_input=gene.gene_name, 
                                uniprot_accession_code=uniprot_accession_code , 
                                species = gene.species, 
@@ -218,11 +219,30 @@ def search():
 
     else:
         
-        return render_template(index.html)
+        return render_template('index.html')
+
+@app.route('/add_gene_to_project', methods=['POST'])
+def add_gene_to_project():
+
+    form = SearchForm()
+     
+    gene_input = request.form.get('gene_name')
+    species = request.form.get('species')
+
+    # Query the Gene table for a gene with the given name and species
+    gene = Gene.query.filter_by(gene_name=gene_input, species=species).first()
+    
+    # user = None 
+    # projects = None
+    # if current_user.is_authenticated:
+    #     user = User.query.get(int(current_user.id))
+    #     projects =  user.projects
+        
+    # return render_template('search.html', gene=gene,  projects=projects, user=user)
+    return render_template('search.html', gene=gene)
 
 
 # Call the create_app function and run the app
-
 
 if __name__ == "__main__":
     app.run(debug=True)
