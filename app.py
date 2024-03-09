@@ -4,7 +4,7 @@ from forms import SignUpForm, LoginForm, SearchForm, ProjectForm
 import pymysql
 from apis import *
 from sqlalchemy import select, and_ 
-from flask import flash, redirect, url_for
+from flask import flash, redirect, url_for, session, jsonify
 from flask_bcrypt import bcrypt
 from flask_login import login_user, current_user, LoginManager, login_required
 
@@ -102,10 +102,12 @@ def search():
     user = User.query.get(int(current_user.id))
 
     gene_input = request.form.get('gene_name')
-
     species = request.form.get('species')
 
-
+    # # If gene_name and species are not in form data, get them from session
+    # if not gene_input or not species:
+    #     gene_input = session.get('gene_name')
+    #     species = session.get('species')
     
     # Query the Gene table for a gene with the given name and species
     gene = Gene.query.filter_by(gene_name=gene_input, species=species).first()
@@ -223,23 +225,25 @@ def search():
 
 @app.route('/add_gene_to_project', methods=['POST'])
 def add_gene_to_project():
-
-    form = SearchForm()
      
-    gene_input = request.form.get('gene_name')
+    gene_name = request.form.get('gene_name')
     species = request.form.get('species')
+    project_id = request.form.get('project_id')
 
     # Query the Gene table for a gene with the given name and species
-    gene = Gene.query.filter_by(gene_name=gene_input, species=species).first()
+    gene = Gene.query.filter_by(gene_name=gene_name, species=species).first()
     
-    # user = None 
-    # projects = None
-    # if current_user.is_authenticated:
-    #     user = User.query.get(int(current_user.id))
-    #     projects =  user.projects
-        
-    # return render_template('search.html', gene=gene,  projects=projects, user=user)
-    return render_template('search.html', gene=gene)
+    if current_user.is_authenticated:
+        project = Projects.query.get(int(project_id))
+        # Add the gene to the project
+        project.genes_projects.append(gene)
+        db.session.commit()
+
+        # Get the current user's projects for the template
+        projects = current_user.user_projects
+
+    return jsonify(success=True)
+
 
 
 # Call the create_app function and run the app
