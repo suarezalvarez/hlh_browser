@@ -1,4 +1,5 @@
 from flask import Flask, render_template, url_for, redirect, request 
+from flask_sqlalchemy import SQLAlchemy
 from model import *
 from forms import SignUpForm, LoginForm, SearchForm, ProjectForm
 import pymysql
@@ -10,12 +11,11 @@ from flask_login import login_user, current_user, LoginManager, login_required
 
 app = Flask(__name__)
 
-
 # Set the secret key
 app.secret_key = 'your-secret-key'
 
 # Set the database URI
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:1234@localhost:3306/hlh'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://hlh_user:hlh_password@localhost:3306/hlh'
 
 # Configure the SQLAlchemy instance with the Flask app
 db.init_app(app)
@@ -32,7 +32,10 @@ def load_user(user_id):
 def index():
     
     # Get a list of all gene names from the Gene table
-    user = User.query.get(int(current_user.id))
+    if current_user.is_authenticated:
+        user = User.query.get(int(current_user.id))
+    else:
+        user = None
     gene_names = [gene.gene_name for gene in Gene.query.all()]
     
     return render_template('index.html', gene_names=gene_names, user=user)
