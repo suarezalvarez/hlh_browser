@@ -11,6 +11,9 @@ from flask_login import login_user, current_user, LoginManager, login_required
 
 app = Flask(__name__)
 
+
+####### PUT THIS IN YOUR BROWSER TO OPEN THE APP!!: http://127.0.0.1:5000/helixcopter/
+
 # Set the secret key
 app.secret_key = 'your-secret-key'
 
@@ -28,7 +31,7 @@ login_manager.login_view = 'login'
 def load_user(user_id):
     return db.session.query(User).get(int(user_id))
 
-@app.route('/')
+@app.route('/helixcopter/')
 def index():
     
     # Get a list of all gene names from the Gene table
@@ -42,7 +45,7 @@ def index():
 
 
 
-@app.route('/signup', methods=['GET', 'POST'])
+@app.route('/helixcopter/signup', methods=['GET', 'POST'])
 def signup():
     form = SignUpForm()
     if form.validate_on_submit():
@@ -57,7 +60,7 @@ def signup():
       
     return render_template('signup.html', form=form)
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/helixcopter/login', methods=['GET', 'POST'])
 def login():
     loginerror = None
     form = LoginForm()  # Create the form instance before the conditional statement
@@ -71,7 +74,7 @@ def login():
         loginerror = 'Invalid email or password'
     return render_template('login.html', form=form, loginerror=loginerror)
                                     
-@app.route('/userspace', methods=['GET', 'POST'])
+@app.route('/helixcopter/userspace', methods=['GET', 'POST'])
 @login_required
 def userspace():
     user = User.query.get(int(current_user.id))
@@ -82,7 +85,7 @@ def userspace():
                            projects=projects)
 
 
-@app.route('/create_project', methods=['GET', 'POST'])
+@app.route('/helixcopter/create_project', methods=['GET', 'POST'])
 def create_project():
     form = ProjectForm()
     if form.validate_on_submit():
@@ -100,7 +103,7 @@ def create_project():
                            projects=projects)
     
     
-@app.route('/search' , methods = ['POST','GET'])
+@app.route('/helixcopter/search' , methods = ['POST','GET'])
 def search():
     user = User.query.get(int(current_user.id))
 
@@ -226,7 +229,7 @@ def search():
         
         return render_template('index.html')
 
-@app.route('/add_gene_to_project', methods=['POST'])
+@app.route('/helixcopter/add_gene_to_project', methods=['POST'])
 def add_gene_to_project():
      
     gene_name = request.form.get('gene_name')
