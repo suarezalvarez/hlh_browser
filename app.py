@@ -39,10 +39,25 @@ def index():
         user = User.query.get(int(current_user.id))
     else:
         user = None
-    gene_names = [gene.gene_name for gene in Gene.query.all()]
+    # gene_names = [gene.gene_name for gene in Gene.query.all()]
     
-    return render_template('index.html', gene_names=gene_names, user=user)
+    # return render_template('index.html', gene_names=gene_names, user=user)
 
+    genes = Gene.query.all()
+
+    # Initialize an empty dictionary to store gene names by species
+    gene_names_by_species = {}
+
+    # Loop through genes and group gene names by species
+    for gene in genes:
+        if gene.species not in gene_names_by_species:
+            gene_names_by_species[gene.species] = []
+        gene_names_by_species[gene.species].append(gene.gene_name)
+
+    # Get the list of available species
+    species = list(gene_names_by_species.keys())
+
+    return render_template('index.html', gene_names_by_species=gene_names_by_species, species=species, user=user)
 
 
 @app.route('/helixcopter/signup', methods=['GET', 'POST'])
@@ -107,8 +122,12 @@ def create_project():
 def search():
     user = User.query.get(int(current_user.id))
 
-    gene_input = request.form.get('gene_name')
-    species = request.form.get('species')
+    if request.method == 'POST':
+        gene_input = request.form.get('gene_name')
+        species = request.form.get('species')
+    else:  # Handle GET request with query parameters
+        gene_input = request.args.get('gene_name')
+        species = request.args.get('species')
 
     # # If gene_name and species are not in form data, get them from session
     # if not gene_input or not species:

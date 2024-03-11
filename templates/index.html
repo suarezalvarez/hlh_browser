@@ -41,32 +41,39 @@
                         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
                         <div class="d-flex justify-content-center">
                             <form method="POST" action="{{ url_for('search') }}">
+                                <!-- Choose the specie -->
+                                <label for="species" style="font-size: 20px;">Please select the species first:</label><br>
+                                <select id="species" name="species">
+                                    <option value="human" selected>Human</option>
+                                    <option value="mouse">Mouse</option>
+                                </select><br>
+
                                 <label for="gene_name" style="font-size: 20px;">Gene Name:</label><br>
                                 <input id="geneName" name="gene_name" style="font-size: 40px; width: 400px; height: 100px;" required><br>
                                 
                         <!-- JavaScript to initialize autocomplete -->
                         <script>
                             $(function() {
-
-                                var gene_names = {{ gene_names|tojson|safe }}; // Render the gene_names variable from Flask
-
-                            
-                                $("#geneName").autocomplete({
-                                    source: gene_names,
-                                    select: function(event, ui) {
-                                        if ($.inArray(ui.item.value, gene_names) == -1) {
-                                            event.preventDefault();
-                                        }
+                                var geneNamesBySpecies = {{ gene_names_by_species|tojson|safe }}; // Render the gene_names_by_species variable from Flask
+                
+                                $("#species").on('change', function() {
+                                    var selectedSpecies = $(this).val();
+                                    var geneNames = geneNamesBySpecies[selectedSpecies];
+                                    if (geneNames) {
+                                        $("#geneName").autocomplete({
+                                            source: geneNames,
+                                            select: function(event, ui) {
+                                                if ($.inArray(ui.item.value, geneNames) == -1) {
+                                                    event.preventDefault();
+                                                }
+                                            }
+                                        });
                                     }
                                 });
                             });
-                            </script>
-
-                                <input type="radio" id="human" name="species" value="human">
-                                <label for="human">Human</label><br>
-                                <input type="radio" id="mouse" name="species" value="mouse">
-                                <label for="mouse">Mouse</label><br>
-                                
+                        </script>
+                
+                        
                                 <input type="submit" value="Submit" style="width: 200px; height: 50px; background-color: blue; color: white; border: none; border-radius: 5px;">
                             </form>
                         </div>

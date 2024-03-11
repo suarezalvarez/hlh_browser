@@ -66,9 +66,11 @@
                     
                     <div class="col-lg-6 order-lg-1 my-auto showcase-text">
                         <h2>Amino Acid Sequence</h2>
+                        <a href="data:text/plain;charset=utf-8,{{ sequence }}" download="aa_{{ gene_input }}_{{ species }}.txt" class="btn btn-primary">Download Sequence</a>
                         <p class="lead mb-0" style="font-family: monospace;">{{ sequence }}</p>
                         
                         <h2>Nucleotide Sequence</h2>
+                        <a href="data:text/plain;charset=utf-8,{{ nuc_seq }}" download="nt_{{ gene_input }}_{{ species }}.txt" class="btn btn-primary">Download Sequence</a>
                         <p class="lead mb-0" style="font-family: monospace;">{{ nuc_seq }}</p>
                     </div>
                 </div>
