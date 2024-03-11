@@ -1,13 +1,14 @@
-from flask import Flask, render_template, url_for, redirect, request 
+from flask import Flask, render_template, url_for, redirect, request, flash, redirect, url_for, session, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from model import *
 from forms import SignUpForm, LoginForm, SearchForm, ProjectForm
 import pymysql
 from apis import *
 from sqlalchemy import select, and_ 
-from flask import flash, redirect, url_for, session, jsonify
 from flask_bcrypt import bcrypt
 from flask_login import login_user, current_user, LoginManager, login_required
+import os
+
 
 app = Flask(__name__)
 
@@ -120,7 +121,10 @@ def create_project():
     
 @app.route('/helixcopter/search' , methods = ['POST','GET'])
 def search():
-    user = User.query.get(int(current_user.id))
+    if current_user.is_authenticated:
+        user = User.query.get(int(current_user.id))
+    else:
+        user = None
 
     if request.method == 'POST':
         gene_input = request.form.get('gene_name')
@@ -196,11 +200,27 @@ def search():
         # Execute the select statement and fetch the results
         results = db.session.execute(stmt).fetchall()
 
-        # Print the gene_in_db values
+        # Create file of the pdb structure
         for result in results:
             pdb_accession_code = result[0]
 
-        
+        if pdb_accession_code == "x":
+    
+            URL = "https://alphafold.ebi.ac.uk/files/AF-" + uniprot_accession_code + "-F1-model_v1.pdb"
+            response = requests.get(URL)
+            
+                
+
+        else:
+            URL = "https://files.rcsb.org/download/" + pdb_accession_code + ".pdb"
+            response = requests.get(URL)
+            
+            
+        with open("static/pdb_files/"+uniprot_accession_code + ".pdb", 'wb') as f:
+                f.write(response.content)
+
+        tmp_file = os.path.join("static","pdb_files", uniprot_accession_code + ".pdb")
+
         
 
         ####################################
@@ -241,7 +261,8 @@ def search():
                                pdb = pdb_accession_code,
                                function = function,
                                network_image = network,
-                               GEO_url = GEO_url)
+                               GEO_url = GEO_url,
+                               tmp_file = tmp_file)
 
 
     else:
@@ -270,6 +291,15 @@ def add_gene_to_project():
     return jsonify(success=True)
 
 
+@app.route('/helixcopter/delete_file/<path:filename>', methods=['POST'])
+def delete_file(filename):
+
+    if os.path.exists(filename):
+        os.remove(filename)
+        return "File removed", 200
+    else:
+        return "File not found", 404
+    
 
 # Call the create_app function and run the app
 

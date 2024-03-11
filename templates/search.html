@@ -92,23 +92,31 @@
                 </div>
             </div>
 
-            <script src="https://unpkg.com/ngl@latest/dist/ngl.js"></script>
-            <script src="static/js/react.production.min.js"></script>
             <script>
-                // Define the pdb variable in the global scope
-                var pdb = "{{ pdb }}";
-                var uniprot = "{{ uniprot_accession_code }}"
+                // Define the variable in the global scope
                 document.addEventListener("DOMContentLoaded", function () {
                     var stage = new NGL.Stage("viewport");
-                    var source = pdb === "x" ? "https://alphafold.ebi.ac.uk/files/AF-" : "https://files.rcsb.org/download/";
-                    var file = pdb === "x" ? uniprot + "-F1-model_v1.pdb" : pdb + ".pdb";
+                    var file = "{{ tmp_file }}";
 
-                    stage.loadFile(source + file, { defaultRepresentation: true }).then(function (o) {
+                    stage.loadFile(file, { defaultRepresentation: true }).then(function (o) {
                         stage.autoView();
                     }).catch(function () {
                         console.error("Failed to load file");
                     });
-                });
+
+                    fetch('/helixcopter/delete_file/' + file, {
+                        method: 'POST',
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                    })
+                    .catch(e => {
+                        console.log('There was a problem with the file deletion request: ' + e.message);
+                    });
+                                    });
+
             </script>
 
  
