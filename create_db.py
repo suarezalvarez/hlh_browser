@@ -20,4 +20,3 @@ with root_engine.connect() as connection:
 # Disconnect from the root connection
 root_engine.dispose()
 
-# Connect to the MySQL server using the new user and database
