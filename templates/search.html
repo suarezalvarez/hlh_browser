@@ -80,45 +80,51 @@
 
 
             <!-- structure PDB or whatever -->
-                <div class="container-fluid p-0" id="Structure">
+            <div class="container-fluid p-0" id="Structure">
                 <div class="row g-0">
-                    <div class="col-lg-6 order-lg-1 my-auto showcase-text">
+                    <div class="col-lg-12 order-lg-1 my-auto showcase-text">
                         <h2>Structure</h2>
                         <p class="lead mb-0">Here we see the structure {{ pdb }}</p>
                     </div>
-                    <div class="col-lg-6 order-lg-2">
-                        <div id="viewport" style="width:400px; height:300px;"></div>
+                </div>
+                <div class="row g-0">
+                    <div class="col-lg-12 order-lg-2">
+                        <div id="viewport" style="width:500px; height:400px; padding-left:20px"></div>
                     </div>
                 </div>
             </div>
-            <script src="https://unpkg.com/ngl@latest/dist/ngl.js"></script>
-            <script src="../static/js/react.production.min.js"></script>
-            <script>
-                // Define the variable in the global scope
-                document.addEventListener("DOMContentLoaded", function () {
-                    var stage = new NGL.Stage("viewport");
-                    var file = "{{ tmp_file }}";
-
-                    stage.loadFile(file, { defaultRepresentation: true }).then(function (o) {
-                        stage.autoView();
-                    }).catch(function () {
-                        console.error("Failed to load file");
-                    });
-
-                    fetch('/helixcopter/delete_file/' + file, {
-                        method: 'POST',
-                    })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! status: ${response.status}`);
-                        }
-                    })
-                    .catch(e => {
-                        console.log('There was a problem with the file deletion request: ' + e.message);
-                    });
-                                      });
-
-            </script>
+            
+            <div class="container-fluid p-0" id="Structure">
+                <div class="row g-0">
+                    <script src="https://unpkg.com/ngl@latest/dist/ngl.js"></script>
+                    <script src="../static/js/react.production.min.js"></script>
+                    <script>
+                        // Define the variable in the global scope
+                        document.addEventListener("DOMContentLoaded", function () {
+                            var stage = new NGL.Stage("viewport");
+                            var file = "{{ tmp_file }}";
+            
+                            stage.loadFile(file, { defaultRepresentation: true }).then(function (o) {
+                                stage.autoView();
+                            }).catch(function () {
+                                console.error("Failed to load file");
+                            });
+            
+                            fetch('/helixcopter/delete_file/' + file, {
+                                method: 'POST',
+                            })
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error(`HTTP error! status: ${response.status}`);
+                                }
+                            })
+                            .catch(e => {
+                                console.log('There was a problem with the file deletion request: ' + e.message);
+                            });
+                        });
+                    </script>
+                </div>
+            </div>
 
  
 
