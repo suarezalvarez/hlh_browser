@@ -10,7 +10,7 @@ from flask_login import login_user, current_user, LoginManager, login_required
 import os
 
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static')
 
 
 ####### PUT THIS IN YOUR BROWSER TO OPEN THE APP!!: http://127.0.0.1:5000/helixcopter/
@@ -219,8 +219,8 @@ def search():
         with open("static/pdb_files/"+uniprot_accession_code + ".pdb", 'wb') as f:
                 f.write(response.content)
 
-        tmp_file = os.path.join("static","pdb_files", uniprot_accession_code + ".pdb")
-
+        tmp_file = os.path.join("/static","pdb_files", uniprot_accession_code + ".pdb")
+        print(tmp_file)
         
 
         ####################################
