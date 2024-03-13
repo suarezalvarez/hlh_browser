@@ -7,7 +7,7 @@ from apis import *
 from sqlalchemy import select, and_ 
 from sqlalchemy.orm.exc import NoResultFound
 from flask_bcrypt import bcrypt
-from flask_login import login_user, current_user, LoginManager, login_required
+from flask_login import login_user, current_user, LoginManager, login_required, logout_user
 import os
 
 
@@ -90,6 +90,12 @@ def login():
                     return redirect(url_for('userspace'))
         loginerror = 'Invalid email or password'
     return render_template('login.html', form=form, loginerror=loginerror)
+
+@app.route('/helixcopter/logout', methods=['POST'])
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
                                     
 @app.route('/helixcopter/userspace', methods=['GET', 'POST'])
 @login_required

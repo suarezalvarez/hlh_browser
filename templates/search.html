@@ -44,6 +44,15 @@
                             <option value="{{ project.id }}">{{ project.project_name }}</option>
                         {% endfor %}
                     {% endif %}
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ category }}">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
                 </select>
                 <input type="submit" value="Add Gene to Project">
             </form>
