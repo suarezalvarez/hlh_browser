@@ -1,10 +1,11 @@
-from flask import Flask, render_template, url_for, redirect, request, flash, redirect, url_for, session, jsonify
+from flask import Flask, render_template, redirect, request, flash, redirect, url_for, session, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from model import *
 from forms import SignUpForm, LoginForm, SearchForm, ProjectForm
 import pymysql
 from apis import *
 from sqlalchemy import select, and_ 
+from sqlalchemy.orm.exc import NoResultFound
 from flask_bcrypt import bcrypt
 from flask_login import login_user, current_user, LoginManager, login_required
 import os
@@ -133,13 +134,12 @@ def search():
         gene_input = request.args.get('gene_name')
         species = request.args.get('species')
 
-    # # If gene_name and species are not in form data, get them from session
-    # if not gene_input or not species:
-    #     gene_input = session.get('gene_name')
-    #     species = session.get('species')
-    
-    # Query the Gene table for a gene with the given name and species
-    gene = Gene.query.filter_by(gene_name=gene_input, species=species).first()
+    try:
+        # Query the Gene table for a gene with the given name and species
+        gene = Gene.query.filter_by(gene_name=gene_input, species=species).one()
+    except NoResultFound:
+        flash("Gene and species not compatible, please select correct values.", "error")
+        return redirect(url_for('index'))  
 
     # Get the Database instance for NCBI
 

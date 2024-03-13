@@ -39,6 +39,18 @@
                         <!-- Include jQuery and jQuery UI libraries -->
                         <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
                         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+                        <!-- Display flash messages -->
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                            {% if messages %}
+                                {% for category, message in messages %}
+                                    <div class="alert alert-{{ category }}" style="text-align: center; color: red;">
+                                        {{ message }}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        {% endwith %}
+
                         <div class="d-flex justify-content-center">
                             <form method="POST" action="{{ url_for('search') }}">
                                 <!-- Choose the specie -->
@@ -69,7 +81,7 @@
                                             }
                                         });
                                     }
-                                });
+                                }).change();
                             });
                         </script>
                 
