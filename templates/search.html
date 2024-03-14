@@ -35,10 +35,10 @@
         <section class="showcase">
 
             <!-- Add Gene to Project -->
-            <form id="addGeneForm" action="{{ url_for('add_gene_to_project') }}" method="post">
+            <form id="addGeneForm" action="{{ url_for('add_gene_to_project') }}" method="post" class="form-signin text-center" >
                 <input type="hidden" name="gene_name" value="{{ gene.gene_name }}">
                 <input type="hidden" name="species" value="{{ gene.species }}">
-                <select name="project_id">
+                <select name="project_id" style="width: 100px; height: 40px; font-size: 18px; text-align: center;">
                     {% if current_user.is_authenticated %}
                         {% for project in current_user.user_projects %}
                             <option value="{{ project.id }}">{{ project.project_name }}</option>
@@ -54,7 +54,7 @@
                         {% endif %}
                     {% endwith %}
                 </select>
-                <input type="submit" value="Add Gene to Project">
+                <input type="submit" class="btn btn-primary" value="Add {{ gene.gene_name }} to a project">
             </form>
 
             <!-- information about gene -->
@@ -66,6 +66,7 @@
                         <p class="lead mb-0">{{ function }}</p>
                     </div>
                 </div>
+            </div>    
 
 
 
@@ -76,7 +77,7 @@
                     <div class="col-lg-6 order-lg-1 my-auto showcase-text">
                         <h2>Amino Acid Sequence</h2>
                         <a href="data:text/plain;charset=utf-8,{{ sequence }}" download="aa_{{ gene_input }}_{{ species }}.txt" class="btn btn-primary">Download Sequence</a>
-                        <p class="lead mb-0" style="font-family: monospace;">{{ sequence }}</p>
+                        <p class="lead mb-5" style="font-family: monospace;">{{ sequence }}</p>
                         
                         <h2>Nucleotide Sequence</h2>
                         <a href="data:text/plain;charset=utf-8,{{ nuc_seq }}" download="nt_{{ gene_input }}_{{ species }}.txt" class="btn btn-primary">Download Sequence</a>
@@ -93,7 +94,7 @@
                 <div class="row g-0">
                     <div class="col-lg-12 order-lg-1 my-auto showcase-text">
                         <h2>Structure</h2>
-                        <p class="lead mb-0">Here we see the structure {{ pdb }}</p>
+                        <p class="lead mb-0">Here we see the structure {{ gene.gene_name }}</p>
                     </div>
                 </div>
                 <div class="row g-0">

@@ -52,16 +52,16 @@
                         {% endwith %}
 
                         <div class="d-flex justify-content-center">
-                            <form method="POST" action="{{ url_for('search') }}">
+                            <form method="POST" action="{{ url_for('search') }}" style="display: flex; flex-direction: column; align-items: center;">
                                 <!-- Choose the specie -->
-                                <label for="species" style="font-size: 20px;">Please select the species first:</label><br>
-                                <select id="species" name="species">
+                                <label for="species" style="font-size: 30px; padding-top: 20px;">Select the species first:</label><br>
+                                <select id="species" name="species" style="width: 100px; height: 40px; font-size: 18px; text-align: center;">
                                     <option value="human" selected>Human</option>
                                     <option value="mouse">Mouse</option>
                                 </select><br>
 
-                                <label for="gene_name" style="font-size: 20px;">Gene Name:</label><br>
-                                <input id="geneName" name="gene_name" style="font-size: 40px; width: 400px; height: 100px;" required><br>
+                                <label for="gene_name" style="font-size: 30px;">Gene name:</label><br>
+                                <input id="geneName" name="gene_name" style="font-size: 60px; width: 400px; height: 100px; text-align: centre;" required><br>
                                 
                         <!-- JavaScript to initialize autocomplete -->
                         <script>
@@ -86,7 +86,7 @@
                         </script>
                 
                         
-                                <input type="submit" value="Submit" style="width: 200px; height: 50px; background-color: blue; color: white; border: none; border-radius: 5px;">
+                                <input type="submit" class="text-center" value="Submit" style="width: 200px; height: 50px; background-color: blue; color: white; border: none; border-radius: 5px;">
                             </form>
                         </div>
 

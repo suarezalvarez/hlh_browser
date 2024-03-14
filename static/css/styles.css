@@ -641,6 +641,13 @@ progress {
   margin-left: auto;
 }
 
+.project-box {
+  padding: 20px;
+  margin: 20px 0;
+  background-color: #ebf1f8d0;  /* Light blue background */
+  border: 1px solid #ffffff;  /* Dark blue border */
+}
+
 @media (min-width: 576px) {
   .container-sm, .container {
     max-width: 540px;
