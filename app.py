@@ -111,10 +111,9 @@ def userspace():
 @app.route('/helixcopter/create_project', methods=['GET', 'POST'])
 def create_project():
     form = ProjectForm()
+    user = User.query.get(int(current_user.id))
     if form.validate_on_submit():
-        user = User.query.get(int(current_user.id))
         
-
         new_project = Projects(project_name=form.project_name.data, description=form.description.data, user=user.id)
         db.session.add(new_project)
         db.session.commit()
@@ -298,6 +297,22 @@ def add_gene_to_project():
         projects = current_user.user_projects
 
     return jsonify(success=True)
+
+
+@app.route('/delete_project/<int:project_id>', methods=['POST'])
+def delete_project(project_id):
+    project = Projects.query.get(project_id)
+    user = User.query.get(int(current_user.id))
+    if project:
+        db.session.delete(project)
+        db.session.commit()
+
+    #needed to reload the page
+    projects = Projects.query.filter_by(user=user.id).all()
+    form = ProjectForm()
+    return render_template('userspace.html', form=form, user_email=user.email, user_name=user.name, user_surname=user.surname,
+                           projects=projects)
+
 
 
 @app.route('/helixcopter/delete_file/<path:filename>', methods=['POST'])
