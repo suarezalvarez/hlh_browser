@@ -83,20 +83,20 @@ with app.app_context():
         
         stmt = insert(gene_has_database).values(gene_id = gene_species.id,
                                                 database_id = uniprot.id, 
-                                                gene_in_db = ids_dict['uniprot'], 
-                                                url = uniprot.url_prefix + ids_dict['uniprot'])
+                                                gene_in_db = ids_dict['uniprot'].strip(), 
+                                                url = uniprot.url_prefix + ids_dict['uniprot'].strip())
         db.session.execute(stmt)
 
         stmt = insert(gene_has_database).values(gene_id=gene_species.id,
                                                 database_id=ncbi.id, 
-                                                gene_in_db = ids_dict['ncbi'], 
-                                                url = ncbi.url_prefix + str(ids_dict['ncbi']))
+                                                gene_in_db = ids_dict['ncbi'].strip(), 
+                                                url = ncbi.url_prefix + str(ids_dict['ncbi']).strip())
         db.session.execute(stmt)
         
         stmt = insert(gene_has_database).values(gene_id=gene_species.id,
                                                 database_id=pdb.id, 
-                                                gene_in_db = ids_dict['pdb'], 
-                                                url = pdb.url_prefix + str(ids_dict['pdb']))
+                                                gene_in_db = ids_dict['pdb'].strip(), 
+                                                url = pdb.url_prefix + str(ids_dict['pdb']).strip())
         db.session.execute(stmt)
         # Commit the session to persist the data in the gene_has_database table
         db.session.commit()

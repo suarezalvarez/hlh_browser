@@ -39,11 +39,7 @@ def get_network(uniprot_accession_code):
     #method1 = "get_string_ids"
     method2 = "network"
 
-    # params1 = {
-    #     "identifiers": uniprot_accession_code,
-    #     "limit": 1,
-    #     "echo_query": 1,
-    # }
+
 
     params2 = {
         "identifiers": uniprot_accession_code,
@@ -52,22 +48,11 @@ def get_network(uniprot_accession_code):
         "caller_identity": "www.awesome_app.org"
     }
 
-    #request_url_id = "/".join([string_api_url, output_format1, method1])
     request_url_network = "/".join([string_api_url, output_format3, method2])
 
-    #results_id = requests.post(request_url_id, data=params1)
     results_network = requests.post(request_url_network, data=params2)
 
     string_identifier = None
-    # for line in results_id.text.strip().split("\n"):
-    #     l = line.split("\t")
-    #     input_identifier, string_identifier = l[0], l[2]
-
-    # file_name = f"{uniprot_accession_code}_network.png"
-    # with open(file_name, 'wb') as fh:
-    #     fh.write(results_network.content)
-
-    # return send_file(file_name, mimetype='image/png')
 
 
     base64_image = base64.b64encode(results_network.content).decode('utf-8')

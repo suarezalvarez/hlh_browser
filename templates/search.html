@@ -58,17 +58,14 @@
             </form>
 
             <!-- information about gene -->
-            <div class="container-fluid p-0" id = "Gene information">
+            <div class="container-fluid p-0" id="Gene information" style="width: 100vw;">
                 <div class="row g-0">
-                    
-                    <div class="col-lg-6 order-lg-1 my-auto showcase-text">
+                    <div class="col-lg-10 order-lg-1 my-auto showcase-text">
                         <h2>Gene information</h2>
-                        <p class="lead mb-0">{{ function }}</p>
+                        <p class="lead mb-0" align="justify">{{ function }}</p>
                     </div>
                 </div>
-            </div>    
-
-
+            </div>
 
             <!-- sequence with download etc -->
             <div class="container-fluid p-0" id = "Sequence">
@@ -92,14 +89,14 @@
             <!-- structure PDB or whatever -->
             <div class="container-fluid p-0" id="Structure">
                 <div class="row g-0">
-                    <div class="col-lg-12 order-lg-1 my-auto showcase-text">
+                    <div class="col-lg-10 order-lg-1 my-auto showcase-text">
                         <h2>Structure</h2>
-                        <p class="lead mb-0">Here we see the structure {{ gene.gene_name }}</p>
+                        <a href="{{ link_structure }}" style="font-size: 20px;">{{ gene_input }}: structure from {{ source_structure }}</a>
                     </div>
                 </div>
                 <div class="row g-0">
-                    <div class="col-lg-12 order-lg-2">
-                        <div id="viewport" style="width:500px; height:400px; padding-left:20px"></div>
+                    <div class="col-lg-10 order-lg-2">
+                        <div id="viewport" style="width:700px; height:400px; padding-left:100px"></div>
                     </div>
                 </div>
             </div>
@@ -142,8 +139,9 @@
                 <div class="container-fluid p-0" id = "Interactions">
                 <div class="row g-0">
                     
-                    <div class="col-lg-6 order-lg-1 my-auto showcase-text">
+                    <div class="col-lg-10 order-lg-1 my-auto showcase-text">
                         <h2>Interactions</h2>
+                        <a href="data:image/png;base64,{{ network_image }}" download="network_{{ gene_input }}_{{ species }}.png" class="btn btn-primary">Download network</a>
                         <img src="data:image/png;base64,{{ network_image }}"></img>
                     </div>
                 </div>
@@ -151,11 +149,11 @@
             </div> 
 
 
-            <!-- interactions -->
+            <!-- datasets -->
                 <div class="container-fluid p-0" id = "Datasets">
                 <div class="row g-0">
                     
-                    <div class="col-lg-6 order-lg-1 my-auto showcase-text">
+                    <div class="col-lg-10 order-lg-1 my-auto showcase-text">
                         <h2>Datasets</h2>
                         <a href="{{ GEO_url }}" class="btn btn-primary">Go to GEO Dataset</a>
                     </div>

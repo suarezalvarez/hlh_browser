@@ -190,7 +190,7 @@ def search():
 
         # fetch sequence from uniprot_accession_code
         for result in results:
-            uniprot_accession_code = result[0]
+            uniprot_accession_code = result[0].strip()
         
 
         sequence = get_sequence(uniprot_accession_code=uniprot_accession_code)
@@ -214,14 +214,15 @@ def search():
     
             URL = "https://alphafold.ebi.ac.uk/files/AF-" + uniprot_accession_code + "-F1-model_v1.pdb"
             response = requests.get(URL)
-            
-                
+            URL_for_link = "https://alphafold.ebi.ac.uk/entry/" + uniprot_accession_code
+            structure_source = "AlphaFold"
 
         else:
             URL = "https://files.rcsb.org/download/" + pdb_accession_code + ".pdb"
             response = requests.get(URL)
-            
-            
+            URL_for_link = "https://www.rcsb.org/structure/" + pdb_accession_code
+            structure_source = "PDB"
+
         with open("static/pdb_files/"+uniprot_accession_code + ".pdb", 'wb') as f:
                 f.write(response.content)
 
@@ -268,7 +269,9 @@ def search():
                                function = function,
                                network_image = network,
                                GEO_url = GEO_url,
-                               tmp_file = tmp_file)
+                               tmp_file = tmp_file,
+                               link_structure = URL_for_link,
+                               source_structure = structure_source)
 
 
     else:
