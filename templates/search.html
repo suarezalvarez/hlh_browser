@@ -60,7 +60,7 @@
             <!-- information about gene -->
             <div class="container-fluid p-0" id="Gene information" style="width: 100vw;">
                 <div class="row g-0">
-                    <div class="col-lg-10 order-lg-1 my-auto showcase-text">
+                    <div class="col-lg- order-lg-1 my-auto showcase-text">
                         <h2>Gene information</h2>
                         <p class="lead mb-0" align="justify">{{ function }}</p>
                     </div>
@@ -170,7 +170,7 @@
             $("#addGeneForm").submit(function(e){
                 e.preventDefault(); // prevent the form from submitting normally
                 $.ajax({
-                    url: '/add_gene_to_project',
+                    url: '/helixcopter/add_gene_to_project',
                     type: 'post',
                     data: $(this).serialize(), // serialize the form data
                     success: function(){
