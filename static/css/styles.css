@@ -10942,3 +10942,16 @@ footer.footer {
 .ui-autocomplete {
   background-color: white;
 }
+.testimonial-img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.showcase-img {
+  height: 500px;
+  background-size: cover;
+  background-position: center;
+}
+</style>
