@@ -118,7 +118,7 @@ def create_project():
         db.session.add(new_project)
         db.session.commit()
     
-        flash('Project created successfully', 'success')
+        flash('Project created successfully', 'userspace-success')
         projects = Projects.query.filter_by(user=user.id).all()
     # Whether the form was submitted or not, render the 'userspace' template
     return render_template('userspace.html', form=form, user_email=user.email, user_name=user.name, user_surname=user.surname,
@@ -143,7 +143,7 @@ def search():
         # Query the Gene table for a gene with the given name and species
         gene = Gene.query.filter_by(gene_name=gene_input, species=species).one()
     except NoResultFound:
-        flash("Gene and species not compatible, please select correct values.", "error")
+        flash("Gene and species not compatible, please select correct values.", "index-error")
         return redirect(url_for('index'))  
 
     # Get the Database instance for NCBI

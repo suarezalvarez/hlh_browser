@@ -44,9 +44,12 @@
                         {% with messages = get_flashed_messages(with_categories=true) %}
                             {% if messages %}
                                 {% for category, message in messages %}
+                                {% if category == 'index-error' %}
                                     <div class="alert alert-{{ category }}" style="text-align: center; color: red;">
                                         {{ message }}
                                     </div>
+                                    {% endif %}
+                                   
                                 {% endfor %}
                             {% endif %}
                         {% endwith %}
@@ -211,7 +214,7 @@
                 <div class="col-lg-4">
                     <div class="testimonial-item mx-auto mb-5 mb-lg-0">
                         <img class="img-fluid rounded-circle mb-3 testimonial-img" src="{{ url_for('static' , filename = 'images/FotoMartin.jpeg')}}" alt="..." />
-                        <h5>Martín Suarez</h5>
+                        <h5>Martín Suárez</h5>
                         <p class="font-weight-light mb-0">"Why don't bHLH proteins ever get lost? Because they always know how to find their way into the right gene neighborhood!"</p>
                     </div>
                 </div>
